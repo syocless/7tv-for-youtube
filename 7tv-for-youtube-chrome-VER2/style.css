@@ -5,3 +5,272 @@
   vertical-align: middle;
   margin: -4px 1px;
 }
+
+/* --- Emote picker ---------------------------------------------------------
+   Metrics and colours below are taken from 7TV's own emote menu stylesheet so
+   this reads as the same UI. Everything is scoped under #seventv-picker so the
+   shared class names can't collide if the real 7TV extension ever runs here. */
+
+#seventv-picker-toggle {
+  display: grid;
+  align-items: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+  height: 2.25rem;
+  padding: 0 .5rem;
+  border-radius: .25rem;
+  color: var(--yt-spec-text-secondary, #aaa);
+  font: 600 1.2rem/1 Roboto, sans-serif;
+}
+
+#seventv-picker-toggle:hover { background: rgba(255, 255, 255, .1); }
+
+#seventv-picker-toggle.seventv-floating {
+  position: fixed;
+  right: 8px;
+  bottom: 28px;
+  z-index: 10000;
+  color: #fff;
+  background: rgba(0, 0, 0, .8);
+}
+
+#seventv-picker {
+  --seventv-background-transparent-1: #171717c4;
+  --seventv-background-transparent-2: #13131397;
+  --seventv-background-shade-1: #171717;
+  --seventv-background-shade-2: #131313;
+  --seventv-border-transparent-1: #ffffff1a;
+  --seventv-highlight-neutral-1: #8080803b;
+  --seventv-text-color-normal: #f0f0f0;
+
+  position: fixed;
+  left: 8px;
+  right: 8px;
+  bottom: 3.5em;
+  z-index: 10000;
+  font: 400 12px/1.2 Roboto, system-ui, sans-serif;
+  color: var(--seventv-text-color-normal);
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  outline: .1em solid var(--seventv-border-transparent-1);
+  background-color: var(--seventv-background-transparent-1);
+  border-radius: .25em;
+  -webkit-backdrop-filter: blur(1em);
+  backdrop-filter: blur(1em);
+  max-height: calc(100vh - 4.5em);
+  overflow: hidden;
+}
+
+/* YouTube light chat: 7TV's light palette. */
+html:not([dark]) #seventv-picker {
+  --seventv-background-transparent-1: #f7f7f7c4;
+  --seventv-background-transparent-2: #e7e7e797;
+  --seventv-background-shade-1: #f7f7f7;
+  --seventv-background-shade-2: #e7e7e7;
+  --seventv-border-transparent-1: #0000001a;
+  --seventv-highlight-neutral-1: #cfcfcf9e;
+  --seventv-text-color-normal: #161616;
+}
+
+#seventv-picker[hidden] { display: none; }
+#seventv-picker *, #seventv-picker *:before, #seventv-picker *:after { box-sizing: border-box; }
+
+#seventv-picker .seventv-emote-menu-header {
+  display: grid;
+  grid-template-rows: 1fr .75fr;
+  border-bottom: .1em solid var(--seventv-border-transparent-1);
+  border-radius: .25em .25em 0 0;
+  background: hsla(0, 0%, 50%, .06);
+}
+
+#seventv-picker .seventv-emote-menu-providers {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  column-gap: .5em;
+  margin: 1em .75em;
+}
+
+#seventv-picker .seventv-emote-menu-provider-icon {
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  padding: .5em .25em;
+  border-radius: .25em;
+  background: hsla(0, 0%, 50%, .06);
+  transition: background .15s ease-in-out;
+}
+
+#seventv-picker .seventv-emote-menu-provider-icon[selected=true] {
+  background: var(--seventv-highlight-neutral-1);
+}
+
+#seventv-picker .seventv-emote-menu-provider-icon > span {
+  font-family: Roboto, monospace;
+  font-weight: 600;
+  font-size: 1.5em;
+}
+
+#seventv-picker .seventv-emote-menu-search { position: relative; height: 100%; }
+
+#seventv-picker .seventv-emote-menu-search .search-icon {
+  position: absolute;
+  top: 0;
+  left: .5em;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: .85em;
+  font-size: 1.4em;
+  opacity: .45;
+  user-select: none;
+  pointer-events: none;
+}
+
+#seventv-picker .seventv-emote-menu-search-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  padding-left: 3em;
+  font: inherit;
+  color: currentColor;
+  background-color: var(--seventv-background-shade-1);
+  transition: background-color .14s;
+}
+
+#seventv-picker .seventv-emote-menu-search-input:focus {
+  background-color: var(--seventv-background-shade-2);
+}
+
+#seventv-picker .seventv-emote-menu-body {
+  display: grid;
+  overflow: hidden;
+  height: 40vh;
+  max-height: 24em;
+  /* Lets the body shrink instead of pushing the search box off-screen when
+     the chat frame is shorter than the menu's natural height. */
+  min-height: 0;
+}
+
+#seventv-picker .seventv-emote-menu-tab-container {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: 1fr;
+  overflow: hidden;
+}
+
+#seventv-picker .seventv-emote-menu-scroll { overflow-y: auto; }
+
+#seventv-picker .seventv-emote-menu-tab-sidebar {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: hsla(0, 0%, 50%, .06);
+  border-left: 1px solid var(--seventv-border-transparent-1);
+}
+
+#seventv-picker .seventv-emote-menu-sidebar-icons { overflow-y: scroll; scrollbar-width: none; }
+#seventv-picker .seventv-emote-menu-sidebar-icons::-webkit-scrollbar { width: 0; height: 0; }
+
+#seventv-picker .seventv-emote-menu-set-sidebar-icon-container {
+  width: 100%;
+  padding: .5em 0;
+  cursor: pointer;
+}
+
+#seventv-picker .seventv-emote-menu-set-sidebar-icon-container[selected=true] {
+  background: hsla(0, 0%, 50%, .32);
+}
+
+#seventv-picker .seventv-emote-menu-set-sidebar-icon {
+  display: block;
+  width: 2.8em;
+  height: 2.8em;
+  margin: auto;
+  border-radius: .5em;
+  object-fit: contain;
+  overflow: clip;
+}
+
+#seventv-picker .seventv-emote-set-container { position: relative; }
+#seventv-picker .seventv-emote-set-container[hidden] { display: none; }
+
+#seventv-picker .seventv-set-header {
+  position: sticky;
+  top: -1px;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: auto 1fr 1.5em;
+  align-items: center;
+  column-gap: .5em;
+  height: 3em;
+  padding: .5em 1.25em;
+  cursor: pointer;
+  background: var(--seventv-background-transparent-2);
+  -webkit-backdrop-filter: blur(1em);
+  backdrop-filter: blur(1em);
+}
+
+#seventv-picker .seventv-set-header-icon {
+  max-width: 2em;
+  max-height: 2em;
+  border-radius: .5em;
+  overflow: clip;
+}
+
+#seventv-picker .seventv-set-name {
+  display: block;
+  font-size: 1.5em;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#seventv-picker .seventv-set-chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2em;
+  height: 2em;
+  border-radius: .25em;
+  transition: transform .25s ease;
+}
+
+#seventv-picker .seventv-set-chevron:hover { background-color: #4d4d4d52; }
+
+#seventv-picker .seventv-emote-set-container[collapsed=true] .seventv-emote-set { display: none; }
+#seventv-picker .seventv-emote-set-container[collapsed=true] .seventv-set-chevron {
+  transform: rotate(-90deg);
+}
+
+#seventv-picker .seventv-emote-set {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 .5em;
+}
+
+#seventv-picker .seventv-emote-container {
+  display: grid;
+  place-items: center;
+  width: 4em;
+  height: 4em;
+  margin: .25em;
+  border-radius: .25rem;
+  cursor: pointer;
+  background: hsla(0, 0%, 50%, .06);
+}
+
+#seventv-picker .seventv-emote-container:hover { background: hsla(0, 0%, 50%, .32); }
+#seventv-picker .seventv-emote-container[hidden] { display: none; }
+
+#seventv-picker .seventv-emote-container img {
+  max-width: 3.5em;
+  max-height: 3.5em;
+}
