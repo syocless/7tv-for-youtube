@@ -4,7 +4,7 @@
 # КАЧАТЬ ЧЕРЕЗ [РЕЛИЗЫ](https://github.com/syocless/7tv-for-youtube/releases)
 # DOWNLOAD CLICK ON [RELEASES](https://github.com/syocless/7tv-for-youtube/releases) 
 # НАБОР СМАЙЛИКОВ Olesha Ent. https://7tv.app/emote-sets/01FEGJ99QR000AENY3GSAKBAHP
-# Люди которые внесли вклад ❤️ Eargosha
+# Люди которые внесли вклад ❤️ Eargosha Overbacon
 
 7TV для YouTube (Неофициально)
 Расширение для браузера, которое добавляет 7TV-смайлики в YouTube Live Chat.
