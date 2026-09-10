@@ -4,6 +4,7 @@
 # КАЧАТЬ ЧЕРЕЗ [РЕЛИЗЫ](https://github.com/syocless/7tv-for-youtube/releases)
 # DOWNLOAD CLICK ON [RELEASES](https://github.com/syocless/7tv-for-youtube/releases) 
 # НАБОР СМАЙЛИКОВ Olesha Ent. https://7tv.app/emote-sets/01FEGJ99QR000AENY3GSAKBAHP
+# ССЫЛКА НА FIREFOX [РАСШИРЕНИЕ](https://addons.mozilla.org/ru/firefox/addon/7tv-for-youtube/)
 # Люди которые внесли вклад ❤️ Eargosha Overbacon
 
 7TV для YouTube (Неофициально)
