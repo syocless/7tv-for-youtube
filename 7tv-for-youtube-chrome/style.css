@@ -53,6 +53,32 @@
   background: rgba(0, 0, 0, .8);
 }
 
+.seventv-comment-toggle {
+  display: inline-grid;
+  align-items: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+  height: 2.25rem;
+  padding: 3px 7px;
+  margin-right: 4px;
+  border-radius: .25rem;
+  color: var(--yt-spec-text-secondary, #aaa);
+  font: 600 12px/1 Roboto, sans-serif;
+}
+
+.seventv-comment-toggle:hover { background: rgba(128, 128, 128, .18); }
+
+.seventv-comment-toggle.seventv-floating {
+  position: fixed;
+  right: 8px;
+  bottom: 28px;
+  z-index: 10000;
+  color: #fff;
+  background: rgba(0, 0, 0, .8);
+}
+
 #seventv-picker {
   --seventv-background-transparent-1: #171717c4;
   --seventv-background-transparent-2: #13131397;

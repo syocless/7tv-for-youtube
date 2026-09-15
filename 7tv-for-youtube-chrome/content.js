@@ -100,10 +100,18 @@ function replaceInMessageNode(node) {
   }
 }
 
+// Same replace-text-with-image logic applies wherever plain text with an
+// emote name sits: live chat messages, video comments, and community posts.
+// Each surface uses a different YouTube component, so list all of them.
+const MESSAGE_SELECTOR = [
+  "yt-live-chat-text-message-renderer #message",
+  "ytd-comment-view-model #content-text",
+  "ytd-comment-renderer #content-text",
+  "ytd-backstage-post-renderer #content-text",
+].join(", ");
+
 function scanExistingMessages() {
-  document
-    .querySelectorAll("yt-live-chat-text-message-renderer #message")
-    .forEach(replaceInMessageNode);
+  document.querySelectorAll(MESSAGE_SELECTOR).forEach(replaceInMessageNode);
 }
 
 function startSafetyNet() {
@@ -115,7 +123,7 @@ function startSafetyNet() {
 
 function closestMessage(node) {
   const el = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
-  return el?.closest ? el.closest("#message") : null;
+  return el?.closest ? el.closest("#message, #content-text") : null;
 }
 
 function observeChat() {
@@ -130,10 +138,12 @@ function observeChat() {
         if (msg) toProcess.add(msg);
         continue;
       }
-      // A whole message (or a chat item wrapping one) was added/rebuilt.
+      // A whole message (or a chat item / comment wrapping one) was added.
       for (const added of m.addedNodes) {
         if (!(added instanceof HTMLElement)) continue;
-        const msg = added.matches?.("#message") ? added : added.querySelector?.("#message");
+        const msg = added.matches?.(MESSAGE_SELECTOR)
+          ? added
+          : added.querySelector?.(MESSAGE_SELECTOR);
         if (msg) toProcess.add(msg);
       }
     }
@@ -206,6 +216,7 @@ async function init() {
   startSafetyNet();
   await loadRecent();
   mountPickerWhenReady();
+  mountCommentPickersWhenReady();
   showBadge(merged.size + " emotes ready", false, merged.size);
 }
 
@@ -322,11 +333,21 @@ function rememberEmote(name) {
 
 // --- Shared lookup and ranking ----------------------------------------------
 
-function chatInput() {
+// Set right before a picker opens, so insertEmote() and the autocomplete
+// helpers below write into whichever box the person actually clicked into —
+// the live chat box, or (once mounted) a comment/community post box.
+let activeInputEl = null;
+
+function defaultChatInput() {
   return (
     document.querySelector("yt-live-chat-text-input-field-renderer #input") ||
     document.querySelector("#input[contenteditable]")
   );
+}
+
+function chatInput() {
+  if (activeInputEl && document.contains(activeInputEl)) return activeInputEl;
+  return defaultChatInput();
 }
 
 function insertEmote(name) {
@@ -745,6 +766,7 @@ function mountPicker(floating) {
   btn.title = "7TV emotes";
   btn.textContent = "7TV";
   btn.addEventListener("click", () => {
+    activeInputEl = defaultChatInput();
     panel.hidden = !panel.hidden;
     if (panel.hidden) return;
     panel.refresh();
@@ -918,4 +940,116 @@ function setupAutocomplete(input) {
   }, true);
 
   input.addEventListener("blur", () => setTimeout(close, 150));
+}
+
+// ################ ПИКЕР ДЛЯ КОММЕНТАРИЕВ И ПОСТОВ СООБЩЕСТВА
+//
+// Комментарии и посты сообщества используют совсем другой компонент поля
+// ввода (ytd-commentbox), не yt-live-chat-message-input-renderer — своя
+// кнопка и своя логика вставки, но сама панель эмодзи (buildPicker) и
+// insertEmote() переиспользуются целиком через activeInputEl выше.
+// Полей ввода на странице может быть много одновременно (основное поле,
+// поля ответов на разные комментарии) — под каждое встраивается своя
+// кнопка-переключатель, но панель эмодзи общая на всех.
+
+let commentPanel = null;
+
+function getCommentEditable(commentbox) {
+  return commentbox.querySelector(
+    '#contenteditable-root[contenteditable], div[contenteditable][id="contenteditable-root"]'
+  );
+}
+
+function ensureCommentPanel() {
+  if (commentPanel && document.contains(commentPanel)) return commentPanel;
+  commentPanel = buildPicker();
+  commentPanel.classList.add("seventv-comment-panel");
+
+  document.addEventListener("click", e => {
+    if (commentPanel.hidden) return;
+    if (e.target.closest?.("#seventv-picker, .seventv-comment-toggle")) return;
+    commentPanel.hidden = true;
+  });
+
+  return commentPanel;
+}
+
+function positionCommentPanel(panel, anchorBtn) {
+  const rect = anchorBtn.getBoundingClientRect();
+  const panelWidth = Math.min(350, window.innerWidth - 16);
+  const left = Math.min(
+    Math.max(8, rect.left),
+    window.innerWidth - panelWidth - 8
+  );
+  // Flip above the button if there isn't room below, same idea as a
+  // dropdown menu — the comment box can be anywhere on a long page.
+  const spaceBelow = window.innerHeight - rect.bottom;
+  const openUpward = spaceBelow < 340 && rect.top > 340;
+
+  panel.style.position = "fixed";
+  panel.style.left = left + "px";
+  panel.style.right = "auto";
+  panel.style.width = panelWidth + "px";
+  if (openUpward) {
+    panel.style.top = "";
+    panel.style.bottom = window.innerHeight - rect.top + 6 + "px";
+  } else {
+    panel.style.bottom = "";
+    panel.style.top = rect.bottom + 6 + "px";
+  }
+}
+
+function attachCommentButton(commentbox) {
+  if (commentbox.querySelector(".seventv-comment-toggle")) return;
+  const editable = getCommentEditable(commentbox);
+  if (!editable) return;
+
+  // YouTube has renamed this row before too — same fallback chain idea as
+  // findButtonRow() for chat.
+  const host =
+    commentbox.querySelector("#emoji-button")?.parentElement ||
+    commentbox.querySelector("#buttons") ||
+    commentbox.querySelector("#footer") ||
+    commentbox.querySelector("#toolbar");
+
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "seventv-comment-toggle";
+  btn.title = "7TV emotes";
+  btn.textContent = "7TV";
+
+  btn.addEventListener("click", e => {
+    e.preventDefault();
+    e.stopPropagation();
+    activeInputEl = editable;
+
+    const panel = ensureCommentPanel();
+    const opening = panel.hidden;
+    panel.hidden = !opening;
+    if (opening) {
+      panel.refresh();
+      positionCommentPanel(panel, btn);
+    }
+  });
+
+  if (host) {
+    host.prepend(btn);
+  } else {
+    btn.classList.add("seventv-floating");
+    document.body.appendChild(btn);
+  }
+}
+
+function scanCommentBoxes() {
+  document.querySelectorAll("ytd-commentbox").forEach(attachCommentButton);
+}
+
+function mountCommentPickersWhenReady() {
+  // Comment boxes come and go constantly — new ones appear for every
+  // "Reply" click, and the whole comments section loads in lazily as the
+  // person scrolls. A live observer suits this better than the chat's
+  // one-shot mount-with-retries, since there's no single "the" input here.
+  scanCommentBoxes();
+  const observer = new MutationObserver(() => scanCommentBoxes());
+  observer.observe(document.body, { childList: true, subtree: true });
 }

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "7TV for YouTube (Unofficial)",
-  "version": "0.0.5.1",
+  "version": "0.0.6",
   "description": "Renders your 7TV emote set inside YouTube Live Chat. Unofficial, not affiliated with 7TV or YouTube.",
   "permissions": [
     "storage"
@@ -48,7 +48,11 @@
         "https://www.youtube.com/live_chat_replay*",
         "https://studio.youtube.com/live_chat*",
         "https://studio.youtube.com/video/*/livestreaming*",
-        "https://studio.youtube.com/channel/*/livestreaming*"
+        "https://studio.youtube.com/channel/*/livestreaming*",
+        "https://www.youtube.com/watch*",
+        "https://www.youtube.com/@*/community*",
+        "https://www.youtube.com/channel/*/community*",
+        "https://www.youtube.com/post/*"
       ],
       "all_frames": true,
       "js": [
