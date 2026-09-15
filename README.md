@@ -1,5 +1,6 @@
-# 7tv-for-youtube
-# 7TV for YouTube (Unofficial) 7TV для YouTube (Неофициально)
+<img width="64" height="64" alt="изображение" src="https://github.com/user-attachments/assets/8c247578-9c79-44e9-8448-f5d781f340e4" />
+
+# 7TV for YouTube (Unofficial) / 7TV для YouTube (Неофициально)
 
 # КАЧАТЬ ЧЕРЕЗ [РЕЛИЗЫ](https://github.com/syocless/7tv-for-youtube/releases)
 # DOWNLOAD CLICK ON [RELEASES](https://github.com/syocless/7tv-for-youtube/releases) 
