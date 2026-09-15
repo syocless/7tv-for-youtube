@@ -1,0 +1,138 @@
+.seventv-emote {
+  display: inline-block;
+  height: 28px;
+  width: auto;
+  vertical-align: middle;
+  margin: -4px 1px;
+}
+
+/* Кнопка открытия панели */
+#seventv-picker-btn {
+  background: transparent;
+  border: 1px solid #ffffff40;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s;
+  margin-right: 8px;
+}
+
+#seventv-picker-btn:hover {
+  background: #ffffff20;
+}
+
+/* Сетка с эмодзи */
+#seventv-picker-grid {
+  width: 100%;
+  max-height: 230px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+  gap: 8px;
+  padding: 10px;
+  background: #222;
+}
+
+.seventv-picker-item {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background 0.15s;
+  display: block;
+}
+
+.seventv-picker-item:hover {
+  background: #ffffff20;
+}
+
+#seventv-picker-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+#seventv-picker-grid::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#seventv-picker-grid::-webkit-scrollbar-thumb {
+  background: #ffffff40;
+  border-radius: 4px;
+}
+
+#seventv-picker-container {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  width: 350px;
+  max-height: 300px;
+  box-sizing: border-box;
+  background: #222;
+  border: 1px solid #444;
+  border-radius: 6px;
+  overflow: hidden;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  display: none;
+}
+
+#seventv-picker-container.seventv-active {
+  display: block;
+}
+
+#seventv-picker-container input {
+  width: calc(100% - 20px);
+  margin: 10px;
+  padding: 8px;
+  box-sizing: border-box;
+  background: #222;
+  border: 1px solid #444;
+  color: #fff;
+  border-radius: 4px;
+  outline: none;
+  display: block;
+}
+
+/* Автодополнение по ":название" */
+#seventv-autocomplete {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 4px;
+  width: 220px;
+  max-height: 220px;
+  overflow-y: auto;
+  background: #222;
+  border: 1px solid #444;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+.seventv-autocomplete-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+  color: #e8e8e8;
+  font-size: 12px;
+  font-family: system-ui, sans-serif;
+}
+
+.seventv-autocomplete-item img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.seventv-autocomplete-item:hover,
+.seventv-autocomplete-item.seventv-active {
+  background: #ffffff20;
+}

@@ -1,21 +1,18 @@
 {
   "manifest_version": 3,
   "name": "7TV for YouTube (Unofficial)",
-  "version": "0.0.5.1",
+  "version": "0.1.0",
   "description": "Renders your 7TV emote set inside YouTube Live Chat. Unofficial, not affiliated with 7TV or YouTube.",
   "permissions": [
     "storage"
   ],
   "background": {
-    "scripts": [
-      "background.js"
-    ]
+    "scripts": ["background.js"]
   },
   "host_permissions": [
     "https://7tv.io/*",
     "https://cdn.7tv.app/*",
-    "https://www.youtube.com/*",
-    "https://studio.youtube.com/*"
+    "https://www.youtube.com/*"
   ],
   "browser_specific_settings": {
     "gecko": {
@@ -33,22 +30,13 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "7TV for YouTube settings",
-    "default_icon": {
-      "16": "icons/icon-16.png",
-      "32": "icons/icon-32.png",
-      "48": "icons/icon-48.png",
-      "128": "icons/icon-128.png"
-    }
+    "default_title": "7TV for YouTube settings"
   },
   "content_scripts": [
     {
       "matches": [
         "https://www.youtube.com/live_chat*",
-        "https://www.youtube.com/live_chat_replay*",
-        "https://studio.youtube.com/live_chat*",
-        "https://studio.youtube.com/video/*/livestreaming*",
-        "https://studio.youtube.com/channel/*/livestreaming*"
+        "https://www.youtube.com/live_chat_replay*"
       ],
       "all_frames": true,
       "js": [
@@ -59,11 +47,5 @@
       ],
       "run_at": "document_idle"
     }
-  ],
-  "icons": {
-    "16": "icons/icon-16.png",
-    "32": "icons/icon-32.png",
-    "48": "icons/icon-48.png",
-    "128": "icons/icon-128.png"
-  }
+  ]
 }

@@ -1,15 +1,13 @@
 {
   "manifest_version": 3,
   "name": "7TV for YouTube (Unofficial)",
-  "version": "0.0.5.1",
+  "version": "0.0.4",
   "description": "Renders your 7TV emote set inside YouTube Live Chat. Unofficial, not affiliated with 7TV or YouTube.",
   "permissions": [
     "storage"
   ],
   "background": {
-    "scripts": [
-      "background.js"
-    ]
+    "service_worker": "background.js"
   },
   "host_permissions": [
     "https://7tv.io/*",
@@ -17,20 +15,6 @@
     "https://www.youtube.com/*",
     "https://studio.youtube.com/*"
   ],
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "{accb8d4f-fe5d-44f4-b85d-82d729a91cce}",
-      "strict_min_version": "140.0",
-      "data_collection_permissions": {
-        "required": [
-          "none"
-        ]
-      }
-    },
-    "gecko_android": {
-      "strict_min_version": "142.0"
-    }
-  },
   "action": {
     "default_popup": "popup.html",
     "default_title": "7TV for YouTube settings",
