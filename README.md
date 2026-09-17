@@ -14,8 +14,6 @@
 <img width="1919" height="880" alt="Снимок экрана 2026-09-15 183734" src="https://github.com/user-attachments/assets/1982d74d-58f5-4cf4-a94b-09fd9ba6cb81" />
 <img width="1917" height="872" alt="Снимок экрана 2026-09-06 134116" src="https://github.com/user-attachments/assets/69f27744-f01d-4f70-80da-6f39c676a621" />
 <img width="1917" height="835" alt="Снимок экрана 2026-09-06 140617" src="https://github.com/user-attachments/assets/7c012db2-97c8-4be6-9cd8-9462286d3a0a" />
-<img width="1917" height="825" alt="Снимок экрана 2026-09-06 141224" src="https://github.com/user-attachments/assets/a873ebc6-d8bd-479f-8723-d02478698c1b" />
-<img width="1917" height="830" alt="Снимок экрана 2026-09-06 141810" src="https://github.com/user-attachments/assets/fc4dc3cb-a356-4033-b7d0-367c00644915" />
 <img width="1917" height="825" alt="Снимок экрана 2026-09-06 192537" src="https://github.com/user-attachments/assets/5b5455a1-8614-454e-be1d-aa84bd692dbd" />
 
 7TV для YouTube (Неофициально)
